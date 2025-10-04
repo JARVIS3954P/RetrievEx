@@ -19,8 +19,7 @@ public class ItemController {
 
     @Autowired
     private ItemRepository itemRepository;
-
-    // ... (existing POST, GET /pending, and PATCH /status endpoints remain unchanged) ...
+    
 
     @PostMapping // POST endpoint from Feature 1
     public ResponseEntity<Item> createItem(@RequestBody Item item) {
