@@ -1,16 +1,21 @@
 import React from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import SubmissionForm from './components/SubmissionForm';
+import ModeratorDashboard from './pages/ModeratorDashboard';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header>
-        <h1>Lost & Found Portal</h1>
-        <p className="read-the-docs">Submit an item below. It will be visible to the public after moderator approval.</p>
-      </header>
+      <nav style={{ padding: '1rem', backgroundColor: '#333' }}>
+        <Link to="/" style={{ marginRight: '1rem' }}>Submit Item</Link>
+        <Link to="/moderator">Moderator Dashboard</Link>
+      </nav>
       <main>
-        <SubmissionForm />
+        <Routes>
+          <Route path="/" element={<SubmissionForm />} />
+          <Route path="/moderator" element={<ModeratorDashboard />} />
+        </Routes>
       </main>
     </div>
   );
