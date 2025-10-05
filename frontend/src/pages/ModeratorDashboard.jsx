@@ -1,5 +1,8 @@
+// FULL FILE: frontend/src/pages/ModeratorDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import styles from './ModeratorDashboard.module.css';
 
 const API_URL = 'http://localhost:8080/api/items';
 
@@ -7,6 +10,7 @@ function ModeratorDashboard() {
     const [pendingItems, setPendingItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchPendingItems();
@@ -19,8 +23,7 @@ function ModeratorDashboard() {
             setPendingItems(response.data);
             setError('');
         } catch (err) {
-            setError('Failed to fetch items. Please try again later.');
-            console.error('Fetch error:', err);
+            setError('Failed to fetch items.');
         } finally {
             setLoading(false);
         }
@@ -29,40 +32,43 @@ function ModeratorDashboard() {
     const handleUpdateStatus = async (id, newStatus) => {
         try {
             await axios.patch(`${API_URL}/${id}/status`, { status: newStatus });
-            // Remove the item from the list in the UI for immediate feedback
             setPendingItems(prevItems => prevItems.filter(item => item.id !== id));
         } catch (err) {
             alert(`Failed to ${newStatus} item.`);
-            console.error('Update error:', err);
         }
     };
 
-    if (loading) return <p>Loading pending items...</p>;
-    if (error) return <p style={{ color: '#ff6b6b' }}>{error}</p>;
+    const handleLogout = () => {
+        sessionStorage.removeItem('isModerator');
+        navigate('/login');
+    };
 
     return (
-        <div style={{ maxWidth: '900px', margin: '2rem auto' }}>
-            <h2>Moderator Dashboard</h2>
-            {pendingItems.length === 0 ? (
-                <p>No items are currently pending approval. Great job!</p>
-            ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {pendingItems.map(item => (
-                        <div key={item.id} style={{ padding: '1rem', border: '1px solid #444', borderRadius: '8px', textAlign: 'left' }}>
-                            <h3>{item.title}</h3>
-                            <p><strong>Description:</strong> {item.description}</p>
-                            <p><strong>Reported by:</strong> {item.reporterEmail}</p>
-                            <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
-                                <button onClick={() => handleUpdateStatus(item.id, 'approved')} style={{ backgroundColor: '#28a745', color: 'white' }}>
-                                    Approve
-                                </button>
-                                <button onClick={() => handleUpdateStatus(item.id, 'rejected')} style={{ backgroundColor: '#dc3545', color: 'white' }}>
-                                    Reject
-                                </button>
+        <div className={styles.dashboard}>
+            <div className={styles.header}>
+                <h2>Moderator Dashboard</h2>
+                <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
+            </div>
+            {loading && <p>Loading pending items...</p>}
+            {error && <p className={styles.error}>{error}</p>}
+            {!loading && !error && (
+                pendingItems.length === 0 ? (
+                    <p className={styles.emptyMessage}>No items are currently pending approval. Great job!</p>
+                ) : (
+                    <div className={styles.itemList}>
+                        {pendingItems.map(item => (
+                            <div key={item.id} className={styles.itemCard}>
+                                <h3>{item.title}</h3>
+                                <p><strong>Description:</strong> {item.description}</p>
+                                <p><strong>Reported by:</strong> {item.reporterEmail}</p>
+                                <div className={styles.actions}>
+                                    <button onClick={() => handleUpdateStatus(item.id, 'approved')} className={styles.approveButton}>Approve</button>
+                                    <button onClick={() => handleUpdateStatus(item.id, 'rejected')} className={styles.rejectButton}>Reject</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )
             )}
         </div>
     );

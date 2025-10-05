@@ -1,0 +1,50 @@
+.listingsPage {
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cardContent {
+  padding: 1.5rem;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.cardContent h3 {
+  margin-top: 0;
+}
+
+.claimButton {
+  margin: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.emptyMessage, .error {
+  background-color: var(--background-secondary);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  color: var(--text-secondary);
+}
+
+.error {
+  color: var(--error-color);
+}

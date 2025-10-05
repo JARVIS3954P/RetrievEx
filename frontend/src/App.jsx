@@ -1,23 +1,30 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import SubmissionForm from './components/SubmissionForm';
 import ModeratorDashboard from './pages/ModeratorDashboard';
-import PublicListings from './pages/PublicListings'; // Import the new component
+import PublicListings from './pages/PublicListings';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <nav style={{ padding: '1rem', backgroundColor: '#333', display: 'flex', justifyContent: 'center', gap: '2rem' }}>
-        <Link to="/">Submit Item</Link>
-        <Link to="/listings">View Public Listings</Link> {/* Add new public link */}
-        <Link to="/moderator">Moderator Dashboard</Link>
-      </nav>
+      <Navbar />
       <main>
         <Routes>
           <Route path="/" element={<SubmissionForm />} />
-          <Route path="/listings" element={<PublicListings />} /> {/* Add new route */}
-          <Route path="/moderator" element={<ModeratorDashboard />} />
+          <Route path="/listings" element={<PublicListings />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/moderator"
+            element={
+              <ProtectedRoute>
+                <ModeratorDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </div>

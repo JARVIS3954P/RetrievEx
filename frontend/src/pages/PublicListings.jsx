@@ -1,5 +1,7 @@
+// FULL FILE: frontend/src/pages/PublicListings.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from './PublicListings.module.css';
 
 const API_URL = 'http://localhost:8080/api/items';
 
@@ -19,51 +21,48 @@ function PublicListings() {
             setApprovedItems(response.data);
             setError('');
         } catch (err) {
-            setError('Could not fetch listings. The service may be temporarily unavailable.');
-            console.error('Fetch error:', err);
+            setError('Could not fetch listings.');
         } finally {
             setLoading(false);
         }
     };
 
     const handleClaim = async (id) => {
-        const claimantEmail = prompt("To claim this item, please enter your email address:");
-        if (!claimantEmail) {
-            alert("Email is required to claim an item.");
-            return;
-        }
+        const claimantEmail = prompt("Please enter your email to claim this item:");
+        if (!claimantEmail) return;
 
         try {
             await axios.patch(`${API_URL}/${id}/claim`, { claimantEmail });
-            alert("Thank you for your claim! You have been recorded as the claimant.");
-            // Refresh the list to remove the claimed item
+            alert("Claim successful!");
             fetchApprovedItems();
         } catch (err) {
-            alert("Error: This item could not be claimed. It may have already been claimed by someone else.");
-            console.error('Claim error:', err);
+            alert("Error: This item could not be claimed.");
         }
     };
 
-    if (loading) return <p>Loading available items...</p>;
-    if (error) return <p style={{ color: '#ff6b6b' }}>{error}</p>;
-
     return (
-        <div style={{ maxWidth: '900px', margin: '2rem auto' }}>
+        <div className={styles.listingsPage}>
             <h2>Publicly Listed Items</h2>
-            {approvedItems.length === 0 ? (
-                <p>There are currently no approved lost or found items.</p>
-            ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                    {approvedItems.map(item => (
-                        <div key={item.id} style={{ padding: '1.5rem', border: '1px solid #444', borderRadius: '8px', textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
-                            <h3 style={{ marginTop: 0 }}>{item.title}</h3>
-                            <p style={{ flexGrow: 1 }}>{item.description}</p>
-                            <button onClick={() => handleClaim(item.id)} style={{ marginTop: '1rem', backgroundColor: '#007bff', color: 'white' }}>
-                                Claim This Item
-                            </button>
-                        </div>
-                    ))}
-                </div>
+            {loading && <p>Loading available items...</p>}
+            {error && <p className={styles.error}>{error}</p>}
+            {!loading && !error && (
+                approvedItems.length === 0 ? (
+                    <p className={styles.emptyMessage}>There are no approved items at the moment.</p>
+                ) : (
+                    <div className={styles.grid}>
+                        {approvedItems.map(item => (
+                            <div key={item.id} className={styles.card}>
+                                <div className={styles.cardContent}>
+                                    <h3>{item.title}</h3>
+                                    <p>{item.description}</p>
+                                </div>
+                                <button onClick={() => handleClaim(item.id)} className={styles.claimButton}>
+                                    Claim This Item
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )
             )}
         </div>
     );

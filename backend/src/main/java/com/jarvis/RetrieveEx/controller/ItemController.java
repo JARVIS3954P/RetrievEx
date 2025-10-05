@@ -19,7 +19,7 @@ public class ItemController {
 
     @Autowired
     private ItemRepository itemRepository;
-    
+
 
     @PostMapping // POST endpoint from Feature 1
     public ResponseEntity<Item> createItem(@RequestBody Item item) {
@@ -59,7 +59,7 @@ public class ItemController {
         }
     }
 
-    // NEW: GET endpoint to fetch all publicly approved items
+    //GET endpoint to fetch all publicly approved items
     @GetMapping("/approved")
     public ResponseEntity<List<Item>> getApprovedItems() {
         try {
@@ -70,7 +70,7 @@ public class ItemController {
         }
     }
 
-    // NEW: PATCH endpoint for a user to claim an item
+    // PATCH endpoint for a user to claim an item
     @PatchMapping("/{id}/claim")
     public ResponseEntity<Item> claimItem(@PathVariable UUID id, @RequestBody Map<String, String> claimDetails) {
         Optional<Item> itemData = itemRepository.findById(id);
