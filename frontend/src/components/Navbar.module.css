@@ -1,7 +1,14 @@
 .navbar {
-  background-color: var(--background-secondary);
+  /* Glassmorphism */
+  background: rgba(18, 18, 18, 0.6);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  
   padding: 0 var(--spacing-unit);
   border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100; /* Ensure it stays on top */
 }
 
 .navContainer {
@@ -17,26 +24,52 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
+  text-shadow: 0 0 10px var(--primary-glow);
+  text-decoration: none;
 }
 
+/* Container for links MUST be relative for the slider to position correctly */
 .navLinks {
   display: flex;
   gap: calc(var(--spacing-unit) * 2);
+  position: relative; /* Crucial */
 }
 
 .navLink {
   color: var(--text-secondary);
   font-weight: 500;
-  padding: 0.5rem 0;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  padding: 0.8rem 0.5rem; /* Add padding for better hit area */
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 2; /* Keep text above the slider */
 }
 
-.navLink:hover {
+.navLink:hover, .navLink.active {
   color: var(--text-primary);
+  text-shadow: 0 0 5px rgba(255,255,255,0.3);
 }
 
-.navLink.active {
-  color: var(--primary-color);
-  border-bottom-color: var(--primary-color);
+/* The Sliding Indicator */
+.slider {
+  position: absolute;
+  bottom: 0;
+  left: 0; /* Will be updated by React inline styles */
+  height: 3px;
+  /* Glowing Gradient */
+  background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--tertiary-glow));
+  background-size: 200% auto;
+  box-shadow: 0 -2px 10px var(--primary-glow);
+  border-radius: 2px 2px 0 0;
+  
+  /* Smooth transition for the sliding effect */
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 1;
+  
+  /* Optional: animate the gradient itself */
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
 }

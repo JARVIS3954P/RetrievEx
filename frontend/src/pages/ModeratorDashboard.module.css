@@ -1,69 +1,17 @@
-.dashboard {
-  max-width: 900px;
-  margin: 2rem auto;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.logoutButton {
-  background-color: var(--surface-color);
-  border: 1px solid var(--border-color);
-}
-
-.logoutButton:hover {
-  background-color: var(--border-color);
-}
-
-.itemList {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.itemCard {
-  background-color: var(--background-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  text-align: left;
-}
-
-.itemCard h3 {
-  margin-top: 0;
-}
-
-.actions {
-  margin-top: 1.5rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.approveButton {
-  background-color: var(--success-color);
-}
-.approveButton:hover {
-  background-color: #218838;
-}
-
-.rejectButton {
-  background-color: var(--error-color);
-}
-.rejectButton:hover {
-  background-color: #c82333;
-}
-
-.emptyMessage, .error {
-  background-color: var(--background-secondary);
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  color: var(--text-secondary);
-}
-
-.error {
-  color: var(--error-color);
-}
+.dashboard { max-width: 900px; margin: 2rem auto; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.logoutButton, .approveButton, .rejectButton { display: flex; align-items: center; justify-content: center; }
+.logoutButton { background-color: var(--surface-color); border: 1px solid var(--border-color); }
+.logoutButton:hover { background-color: rgba(255, 255, 255, 0.1); }
+.itemList { display: flex; flex-direction: column; gap: 1.5rem; }
+.itemCard { background: var(--surface-color); backdrop-filter: blur(var(--glass-blur)); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; text-align: left; transition: all 0.3s ease; }
+.itemCard:hover { border-color: var(--primary-glow); }
+.itemCard h3 { margin-top: 0; }
+.email { color: var(--tertiary-glow); font-weight: 500; }
+.actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+.approveButton { background-color: rgba(52, 211, 153, 0.1); border-color: var(--success-color); color: var(--success-color); }
+.approveButton:hover { background-color: rgba(52, 211, 153, 0.2); box-shadow: 0 0 15px var(--success-color); }
+.rejectButton { background-color: rgba(248, 113, 113, 0.1); border-color: var(--error-color); color: var(--error-color); }
+.rejectButton:hover { background-color: rgba(248, 113, 113, 0.2); box-shadow: 0 0 15px var(--error-color); }
+.emptyMessage { padding: 3rem; text-align: center; background: var(--surface-color); border-radius: var(--border-radius); border: 1px solid var(--border-color); }
+.emptyMessage p { font-size: 1.2rem; color: var(--text-secondary); }
